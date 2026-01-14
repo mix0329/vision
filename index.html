@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>株式会社BAN - Vision Blueprint Final v27.1</title>
+    <title>株式会社BAN - Vision Blueprint Final v30</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -158,6 +158,27 @@
         .credo-stanza { margin-bottom: 24px; } .credo-stanza:last-child { margin-bottom: 0; }
         .draw-box { opacity: 0; } 
 
+        /* 7 Rules */
+        .rule-list { display: flex; flex-direction: column; gap: 0; width: 100%; margin-top: 40px; }
+        .rule-item { 
+            display: flex; flex-direction: column; text-align: left; padding: 50px 20px; 
+            border-bottom: 1px solid var(--ink-color);
+        }
+        .rule-item:first-child { border-top: 1px solid var(--ink-color); }
+        
+        .rule-header { 
+            font-family: var(--font-mono); font-size: 18px; font-weight: 700; 
+            margin-bottom: 15px; opacity: 0.7; letter-spacing: 0.05em;
+        }
+        .rule-title { 
+            font-family: var(--font-gothic); font-size: 28px; font-weight: 900; 
+            line-height: 1.4; margin-bottom: 25px; 
+        }
+        .rule-text-block { 
+            font-family: var(--font-mincho); font-size: 16px; font-weight: 500; 
+            line-height: 2.2; text-align: justify; 
+        }
+
         /* 表示切り替え用クラス */
         .pc-only { display: block; }
         .sp-only { display: none; }
@@ -193,31 +214,34 @@
             .credo-item { padding: 30px 15px; }
             .credo-title { font-size: 26px; line-height: 1.4; white-space: normal; }
             
+            /* Rules (スマホ調整) */
+            .rule-item { padding: 35px 15px; }
+            .rule-header { font-size: 16px; }
+            .rule-title { font-size: 24px; line-height: 1.4; }
+            .rule-text-block { 
+                font-size: 15px; line-height: 1.75; 
+                text-align: left; 
+                text-align-last: left;
+            }
+
             /* 汎用テキスト */
             .block-desc, .credo-text-block, .system-body-text, .logic-footer { text-align: left; font-size: 15px; line-height: 1.75; word-break: break-all; }
 
             /* Logic矢印 & センター調整 */
             .logic-wrapper { 
                 flex-direction: column; gap: 30px; 
-                align-items: center; /* コンテナ全体の中央揃えを強化 */
+                align-items: center; 
             }
             .logic-block {
-                width: 100%; /* 幅を明示 */
-                padding-left: 0; /* PC用の左パディングを解除 */
-                display: flex;
-                flex-direction: column;
-                align-items: center; /* 子要素を中央揃え */
-                text-align: center;
+                width: 100%; padding-left: 0; 
+                display: flex; flex-direction: column; align-items: center; text-align: center;
             }
-            .block-label {
-                text-align: center;
-                width: 100%;
-            }
+            .block-label { text-align: center; width: 100%; }
             .arrow-center { 
                 width: 100%; margin: 15px 0; padding: 15px 0;
                 display: flex; flex-direction: column; align-items: center;
             }
-            .causality-text { transform: none; margin: 0 0 20px 0; font-size: 16px; } /* 修正: 下余白を追加 */
+            .causality-text { transform: none; margin: 0 0 20px 0; font-size: 16px; } 
             .arrow-svg { transform: rotate(90deg); width: 60px; height: 30px; }
             
             /* SVG文字サイズ */
@@ -432,7 +456,7 @@
         <div class="container">
             <div class="text-center" style="margin-bottom: 60px;">
                 <h2 class="text-title sketch-style impactive-text">5 Action Codes</h2>
-                <p class="text-mono-label">行動指針</p>
+                <p class="text-mono-label">5つの判断基準</p>
             </div>
             <div class="credo-list">
                 <div class="credo-item sketch-style draw-box">
@@ -468,6 +492,66 @@
                     <h3 class="credo-title">「成長し続ける努力こそ、<br class="br-sp">最強の資産だ。」</h3>
                     <div class="credo-text-block">
                         <p class="credo-stanza">結果は水物だが、積み上げたスキルは裏切らない。会社のためではない。あなた自身のために、昨日の自分をUpdateし続けろ。そのプロセスだけが、誰にも奪えない一生の財産になる。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="p18-rules">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 60px;">
+                <h2 class="text-title sketch-style impactive-text">7 Rules</h2>
+                <p class="text-mono-label">7つの基本動作</p>
+            </div>
+            <div class="rule-list">
+                <div class="rule-item">
+                    <div class="rule-header">01. Self Branding <br class="br-sp">(自分をプロデュース)</div>
+                    <h3 class="rule-title">「自由だからこそ、<br class="br-sp">カッコよく。」</h3>
+                    <div class="rule-text-block">
+                        <p>タトゥーも髪型も自由です。でも、それは「何もしなくていい」という意味ではありません。お客様の視線はあなたに集まります。「だらしない」と思われるか、「個性的でカッコいい」と思われるか。見られている意識を持って、自分のスタイルを完成させましょう。</p>
+                    </div>
+                </div>
+                <div class="rule-item">
+                    <div class="rule-header">02. Stage Cleanliness <br class="br-sp">(清潔な舞台)</div>
+                    <h3 class="rule-title">「清潔感こそ、<br class="br-sp">最大の演出。」</h3>
+                    <div class="rule-text-block">
+                        <p>床のゴミ、テーブルの汚れ。どんなに美味しい料理も、不潔な場所では台無しです。気づいたら即リセット。お客様を招くステージを、常にピカピカの「新品状態」に保つこと。それが、私たちの美学です。</p>
+                    </div>
+                </div>
+                <div class="rule-item">
+                    <div class="rule-header">03. Warm Welcome <br class="br-sp">(最高の出迎え)</div>
+                    <h3 class="rule-title">「最初の7分で、<br class="br-sp">ファンにする。」</h3>
+                    <div class="rule-text-block">
+                        <p>「いらっしゃいませ」は始まりに過ぎません。席へのご案内、メニューやシステムの説明。これらをただのマニュアル通りの「作業」にしないでください。オーダーが決まるまでの7分間、そのすべてが「歓迎」です。ここで心を掴めれば、料理は何倍も美味しくなります。</p>
+                    </div>
+                </div>
+                <div class="rule-item">
+                    <div class="rule-header">04. Anticipation <br class="br-sp">(言われる前に動く)</div>
+                    <h3 class="rule-title">「『気が利くね』と<br class="br-sp">言われよう。」</h3>
+                    <div class="rule-text-block">
+                        <p>お客様がキョロキョロしていたら、それは「困っている」サイン。呼ばれる前に「お水お持ちしましょうか？」の一言を。その小さな先回りが、あなたを「ただの店員」から「気が利くプロ」に変えます。</p>
+                    </div>
+                </div>
+                <div class="rule-item">
+                    <div class="rule-header">05. Consistency <br class="br-sp">(ムラをなくす)</div>
+                    <h3 class="rule-title">「1回目も100回目も、<br class="br-sp">同じ感動を。」</h3>
+                    <div class="rule-text-block">
+                        <p>慣れてきた頃が一番危ないタイミング。レシピや手順を勝手に変えず、基本（ロジック）を大切にしましょう。いつでも「あの味、あの接客」が楽しめるのが、プロの仕事です。</p>
+                    </div>
+                </div>
+                <div class="rule-item">
+                    <div class="rule-header">06. Fond Farewell <br class="br-sp">(記憶に残る見送り)</div>
+                    <h3 class="rule-title">「『また来たい』は、<br class="br-sp">背中で決まる。」</h3>
+                    <div class="rule-text-block">
+                        <p>「ありがとうございました」は、伝票を渡す時ではなく、お客様が店を出るその瞬間のためにあります。去り際のアイコンタクトと一言が、最後にして最大のスパイスです。</p>
+                    </div>
+                </div>
+                <div class="rule-item">
+                    <div class="rule-header">07. Be Proud <br class="br-sp">(誇りを持つ)</div>
+                    <h3 class="rule-title">「大切な人を、<br class="br-sp">胸を張って呼べる店に。」</h3>
+                    <div class="rule-text-block">
+                        <p>家族、恋人、親友。「今日、私の店に来てよ」と自信を持って言えますか？ 掃除も、料理も、接客も。一番大切な人に自信を持って出せるクオリティが、私たちの合格ラインです。</p>
                     </div>
                 </div>
             </div>
