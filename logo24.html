@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>株式会社BAN - Vision Blueprint Final v23</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #f4f4f0;
+            --ink-color: #1a1a1a;
+            --content-width: 1100px;
+            --font-gothic: 'Noto Sans JP', sans-serif;
+            --font-mincho: 'Shippori Mincho', serif;
+            --font-mono: 'Courier Prime', monospace;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--ink-color);
+            font-family: var(--font-mincho);
+            overflow-x: hidden;
+            line-height: 2.2;
+            font-size: 16px;
+        }
+
+        /* 背景設定 */
+        .grid-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2;
+            background-image: 
+                linear-gradient(#d0d0d0 1px, transparent 1px),
+                linear-gradient(90deg, #d0d0d0 1px, transparent 1px);
+            background-size: 30px 30px; opacity: 0.6;
+        }
+        .paper-noise {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            opacity: 0.5; pointer-events: none;
+            filter: grayscale(100%) contrast(120%) brightness(100%);
+            background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)" opacity="0.4"/%3E%3C/svg%3E');
+        }
+
+        /* 共通レイアウト */
+        section {
+            min-height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 100px 20px; box-sizing: border-box; position: relative;
+        }
+        .container { width: 100%; max-width: var(--content-width); margin: 0 auto; position: relative; }
+        .text-center { text-align: center; }
+
+        /* タイポグラフィ */
+        .text-hero, .text-title, .draw-text, .impactive-text {
+            font-family: var(--font-gothic); font-weight: 900; color: var(--ink-color); letter-spacing: 0.05em;
+        }
+        .text-hero { font-size: clamp(36px, 5vw, 80px); line-height: 1.4; }
+        .text-title { font-size: clamp(32px, 4vw, 56px); margin-bottom: 20px; }
+        .text-mid-bold { font-family: var(--font-gothic); font-weight: 900; font-size: clamp(24px, 3.5vw, 36px); line-height: 1.6; }
+        .text-base { font-family: var(--font-mincho); font-size: 16px; font-weight: 500; line-height: 2.4; text-align: justify; }
+        .text-mono-label { font-family: var(--font-mono); font-size: 14px; letter-spacing: 0.1em; margin-bottom: 10px; display: block; font-weight: bold; }
+        .philosophy-sub { font-family: var(--font-mono); font-size: 20px; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 5px; display: block; }
+
+        /* デザインパーツ */
+        .sketch-style { filter: url(#pencil-grain); overflow: visible; }
+        path, line, rect, polyline, circle {
+            fill: none; stroke: var(--ink-color); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke;
+        }
+        /* 共通SVGテキストスタイル */
+        .draw-text-svg {
+            font-family: var(--font-gothic); font-weight: 900; fill: transparent;
+            stroke: var(--ink-color); stroke-width: 0.6px; stroke-linejoin: round; stroke-linecap: round;
+        }
+        
+        /* TOPセクション用：手書きアニメーション用クラス */
+        .draw-text-hero {
+            font-family: var(--font-gothic); font-weight: 900; 
+            fill: transparent; /* 最初は中塗りなし */
+            stroke: var(--ink-color); stroke-width: 0.6px; stroke-linejoin: round; stroke-linecap: round;
+        }
+        
+        /* TOPセクション用：フェードイン用クラス（修正：font-weightを900に） */
+        .fade-text-hero {
+            font-family: var(--font-gothic); 
+            font-weight: 900; /* 極太に修正 */
+            fill: var(--ink-color);
+            stroke: none;
+            opacity: 0;
+        }
+
+        .anim-fade { opacity: 0; }
+        
+        /* 統合セクション用スタイル */
+        .philosophy-list { display: flex; flex-direction: column; gap: 40px; width: 100%; margin-top: 40px; }
+        .philosophy-item {
+            position: relative; padding: 60px 40px; border: 3px solid var(--ink-color); text-align: center;
+            background: none; 
+        }
+        .philosophy-label {
+            font-family: var(--font-gothic); font-size: 42px; font-weight: 900;
+            letter-spacing: 0.05em; margin-bottom: 10px; display: block;
+            opacity: 0.3; position: absolute; top: 20px; left: 30px;
+        }
+        .connector-arrow { display: flex; justify-content: center; align-items: center; height: 60px; }
+        
+        /* 本文テキストエリア */
+        .philosophy-content {
+            margin-top: 30px;
+            text-align: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .p-text-bold {
+            font-family: var(--font-gothic); font-weight: 700; font-size: 20px; margin-bottom: 15px; display: block;
+        }
+        .p-text-body {
+            font-family: var(--font-mincho); font-size: 16px; font-weight: 500; text-align: justify; display: inline-block;
+        }
+
+        /* ロゴ画像のスタイル */
+        .logo-img { 
+            width: 240px; 
+            height: auto; 
+            margin: 0 auto; 
+            display: block;
+            opacity: 1; 
+            filter: url(#white-to-transparency);
+        }
+
+        /* Logic Block (統合版) */
+        .logic-integrated {
+            padding: 40px;
+            border-top: 1px dashed var(--ink-color);
+            border-bottom: 1px dashed var(--ink-color);
+            margin: 20px 0;
+        }
+        .logic-header { text-align: center; margin-bottom: 40px; }
+        .logic-header-en { font-family: var(--font-mono); font-size: 24px; font-weight: 700; letter-spacing: 0.2em; display: block; }
+        .logic-header-jp { font-family: var(--font-gothic); font-size: 14px; letter-spacing: 0.1em; display: block; margin-top: 5px; opacity: 0.6; }
+        .logic-wrapper { display: flex; justify-content: center; align-items: stretch; gap: 20px; width: 100%; }
+        .logic-block { position: relative; flex: 1; max-width: 480px; padding-left: 30px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .dimension-svg { position: absolute; top: 0; left: 0; width: 40px; height: 100%; overflow: visible; }
+        .dimension-line { stroke-width: 4; filter: url(#pencil-grain); }
+        .block-label { font-family: var(--font-mono); font-weight: 700; font-size: 20px; margin-bottom: 20px; width: 100%; text-align: center; }
+        .logic-main-text { font-family: var(--font-gothic); font-weight: 900; font-size: 36px; line-height: 1.3; margin: 20px 0; color: var(--ink-color); opacity: 0; }
+        .block-desc { font-family: var(--font-mincho); font-size: 15px; line-height: 1.8; text-align: left; width: 100%; color: var(--ink-color); margin-top: 20px; }
+        .arrow-center { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 150px; margin-top: -40px; }
+        .causality-text { font-family: var(--font-gothic); font-size: 24px; font-weight: 900; margin-bottom: 10px; text-align: center; line-height: 1.2; color: var(--ink-color); }
+        .arrow-svg { width: 80px; height: 30px; overflow: visible; }
+        .static-chevron { fill: none; stroke: var(--ink-color); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; filter: url(#pencil-grain); }
+        .logic-footer { margin-top: 40px; text-align: center; font-family: var(--font-mincho); font-size: 16px; line-height: 2.0; width: 80%; margin-left: auto; margin-right: auto; }
+
+        /* System (統合版) */
+        .system-body-text { font-family: var(--font-gothic); font-weight: 900; font-size: 32px; line-height: 1.6; text-align: center; }
+        
+        /* Credoリスト */
+        .credo-list { display: flex; flex-direction: column; gap: 60px; width: 100%; }
+        .credo-item { display: flex; flex-direction: column; text-align: left; padding: 50px; border: 2px solid var(--ink-color); }
+        .credo-header { font-family: var(--font-mono); font-size: 20px; font-weight: 700; margin-bottom: 15px; opacity: 0.7; }
+        .credo-title { font-family: var(--font-gothic); font-size: 36px; font-weight: 900; line-height: 1.3; margin-bottom: 30px; }
+        .credo-text-block { font-family: var(--font-mincho); font-size: 16px; font-weight: 500; line-height: 2.2; text-align: left; }
+        .credo-stanza { margin-bottom: 24px; } .credo-stanza:last-child { margin-bottom: 0; }
+        
+        /* SVG描画用 */
+        .draw-box { opacity: 0; } 
+    </style>
+</head>
+<body>
+
+    <div class="grid-bg"></div>
+    <div class="paper-noise"></div>
+
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <filter id="pencil-grain">
+                <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" />
+            </filter>
+            <filter id="white-to-transparency">
+                <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 1 0 "/>
+            </filter>
+        </defs>
+    </svg>
+
+    <section id="p2-slogan">
+        <div class="container text-center">
+            <svg viewBox="0 0 960 550" class="sketch-style" width="100%">
+                
+                <text x="480" y="100" text-anchor="middle" class="fade-text-hero" style="font-size: 48px;">「想い」だけでは、届かない。</text>
+                
+                <text x="480" y="200" text-anchor="middle" class="fade-text-hero" style="font-size: 48px;">「理想」だけでは、叶わない。</text>
+                
+                <text x="480" y="420" text-anchor="middle" class="draw-text-hero text-hero" style="font-size: 56px;">だから我々は情緒を機能させる。</text>
+                
+                <line x1="100" y1="480" x2="860" y2="480" class="draw-line-hero" style="stroke: #1a1a1a; stroke-width: 4px; stroke-linecap: round;" />
+            </svg>
+        </div>
+    </section>
+
+    <section id="philosophy-integrated">
+        <div class="container">
+            <h2 class="text-center text-title sketch-style impactive-text">私たちの思想設計</h2>
+            <div style="margin-top:20px; text-align:center;">
+                <p class="philosophy-sub">[Vision / Mission / Purpose]</p>
+            </div>
+
+            <div class="philosophy-list">
+                
+                <div class="philosophy-item sketch-style draw-box detail-section">
+                    <span class="philosophy-label">01.VISION</span>
+                    <div class="text-center" style="margin-bottom: 20px; font-family: var(--font-mono); font-weight:700;">[理念・到達点]</div>
+                    
+                    <div style="width:100%; max-width:900px; margin:0 auto;">
+                        <svg viewBox="0 0 900 150" class="sketch-style" width="100%">
+                            <text x="450" y="60" text-anchor="middle" class="draw-text-svg" style="font-size: 42px;">感動をデザインし、</text>
+                            <text x="450" y="120" text-anchor="middle" class="draw-text-svg" style="font-size: 42px;">熱狂を必然にする。</text>
+                        </svg>
+                    </div>
+                    
+                    <div class="philosophy-content anim-fade">
+                        <p class="p-text-bold">私たちは、奇跡を待たない。</p>
+                        <p class="p-text-body">
+                            「感動」とは、魔法やセンスといった曖昧なものではなく、<br>1g、1℃、1秒の精度で計算された「設計（デザイン）」の結果だ。<br>
+                            「熱狂」とは、運任せのラッキーパンチではなく、<br>正しいロジックを積み上げた先に待つ「必然」の帰結だ。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="connector-arrow">
+                    <svg viewBox="0 0 40 40" width="40" height="40" class="sketch-style">
+                        <line class="draw-line" x1="20" y1="0" x2="20" y2="40"/><polyline class="draw-line" points="10,30 20,40 30,30"/>
+                    </svg>
+                </div>
+
+                <div class="logic-integrated anim-fade">
+                    <div class="logic-header">
+                        <span class="logic-header-en">TAGLINE LOGIC</span>
+                        <span class="logic-header-jp">// 言葉の設計図</span>
+                    </div>
+                    <div class="logic-wrapper">
+                        <div class="logic-block">
+                            <svg class="dimension-svg" preserveAspectRatio="none">
+                                <line class="dimension-line draw-logic-line" x1="10" y1="0" x2="10" y2="100%" />
+                                <line class="dimension-line draw-logic-line" x1="0" y1="2" x2="20" y2="2" />
+                                <line class="dimension-line draw-logic-line" x1="0" y1="99%" x2="20" y2="99%" />
+                            </svg>
+                            <div class="block-label">INPUT [私たちの仕事]</div>
+                            <div class="logic-main-text anim-fade-text">感動を<br>デザインする</div>
+                            <div class="block-desc">ブランド・商品・サービス・価格、そして心理的アクセス。これら全ての要素をひとつの「戦略」として組み上げ、完璧に遂行する。</div>
+                        </div>
+                        <div class="arrow-center">
+                            <div class="causality-text">CAUSALITY<br>(因果関係)</div>
+                            <svg class="arrow-svg" viewBox="0 0 100 40">
+                                <polyline class="static-chevron" points="10,5 30,20 10,35" />
+                                <polyline class="static-chevron" points="40,5 60,20 40,35" />
+                                <polyline class="static-chevron" points="70,5 90,20 70,35" />
+                            </svg>
+                        </div>
+                        <div class="logic-block">
+                            <svg class="dimension-svg" preserveAspectRatio="none">
+                                <line class="dimension-line draw-logic-line" x1="10" y1="0" x2="10" y2="100%" />
+                                <line class="dimension-line draw-logic-line" x1="0" y1="2" x2="20" y2="2" />
+                                <line class="dimension-line draw-logic-line" x1="0" y1="99%" x2="20" y2="99%" />
+                            </svg>
+                            <div class="block-label">OUTPUT [ビジネスの結果]</div>
+                            <div class="logic-main-text anim-fade-text">熱狂が<br>必然になる</div>
+                            <div class="block-desc">顧客の「感情」と「行動」が計算通りに連鎖し、一過性ではない熱狂的なファンベースと、再現性の高い利益が確立される。</div>
+                        </div>
+                    </div>
+                    <div class="logic-footer">「煽り」や「演出」で、無理やり熱狂を作る必要はない。<br>いい仕事を計算通りに積み上げれば、結果は「必然」に生まれる。</div>
+                </div>
+                <div class="connector-arrow">
+                    <svg viewBox="0 0 40 40" width="40" height="40" class="sketch-style">
+                        <line class="draw-line" x1="20" y1="0" x2="20" y2="40"/><polyline class="draw-line" points="10,30 20,40 30,30"/>
+                    </svg>
+                </div>
+
+                <div class="philosophy-item sketch-style draw-box detail-section">
+                    <span class="philosophy-label">02.MISSION</span>
+                    <div class="text-center" style="margin-bottom: 20px; font-family: var(--font-mono); font-weight:700;">[使命・果たす役割]</div>
+                    
+                    <div style="width:100%; max-width:900px; margin:0 auto;">
+                        <svg viewBox="0 0 900 150" class="sketch-style" width="100%">
+                            <text x="450" y="60" text-anchor="middle" class="draw-text-svg" style="font-size: 54px;">Update Restaurant.</text>
+                            <text x="450" y="130" text-anchor="middle" class="draw-text-svg" style="font-size: 28px;">「センス」と「根性」の時代を終わらせる。</text>
+                        </svg>
+                    </div>
+
+                    <div class="philosophy-content anim-fade">
+                        <p class="p-text-body">
+                            多くの飲食店は、個人の「センス」や「根性」、そして偶然の「奇跡」に頼りすぎている。<br>
+                            それは働く人間にとって不公平で、経営としてあまりに脆い。<br>
+                            だから私たちは、この業界をUpdateする。
+                        </p>
+                        <div style="margin: 20px 0;"><svg class="sketch-style" width="100%" height="20" viewBox="0 0 400 10"><line x1="0" y1="5" x2="400" y2="5" class="draw-line" /></svg></div>
+                        <p class="p-text-body">
+                            不確かな「センス」を、確実な「勝率（ロジック）」へ。<br>
+                            一部の天才でなくても、実直な人間がロジックで勝てる世界へ。<br>
+                            才能や運の不平等をなくし、正しい努力が100%報われる仕組みを構築する。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="connector-arrow">
+                    <svg viewBox="0 0 40 40" width="40" height="40" class="sketch-style">
+                        <line class="draw-line" x1="20" y1="0" x2="20" y2="40"/><polyline class="draw-line" points="10,30 20,40 30,30"/>
+                    </svg>
+                </div>
+
+                <div class="detail-section" style="padding: 60px 0; text-align: center;">
+                    <div style="width:100%; max-width:800px; margin:0 auto;">
+                        <svg viewBox="0 0 800 250" class="sketch-style" width="100%">
+                            <text x="400" y="150" text-anchor="middle" class="draw-text-svg" style="font-size: 140px; stroke-width:3px;">「仕組み」</text>
+                        </svg>
+                        <div class="anim-fade" style="margin-top:20px;">
+                            <p class="system-body-text" style="font-size: 28px;">
+                                ここにあるのは、勝つための明快な「仕組み」だ。<br>
+                                不器用でもいい。真面目な人間が、正しい武器を使えば、<br>天才にも負けない成果が出せる。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="connector-arrow">
+                    <svg viewBox="0 0 40 40" width="40" height="40" class="sketch-style">
+                        <line class="draw-line" x1="20" y1="0" x2="20" y2="40"/><polyline class="draw-line" points="10,30 20,40 30,30"/>
+                    </svg>
+                </div>
+
+                <div class="philosophy-item sketch-style draw-box detail-section">
+                    <span class="philosophy-label">03.PURPOSE</span>
+                    <div class="text-center" style="margin-bottom: 20px; font-family: var(--font-mono); font-weight:700;">[存在意義・原動力]</div>
+                    
+                    <div style="width:100%; max-width:900px; margin:0 auto;">
+                        <svg viewBox="0 0 900 200" class="sketch-style" width="100%">
+                            <text x="450" y="60" text-anchor="middle" class="draw-text-svg" style="font-size: 54px;">LIFE over LABOR.</text>
+                            <text x="450" y="140" text-anchor="middle" class="draw-text-svg" style="font-size: 38px;">思考停止を拒絶し、生きる選択肢を最大化する。</text>
+                        </svg>
+                    </div>
+
+                    <div class="philosophy-content anim-fade">
+                        <p class="p-text-body">
+                            労働のために生きるな。生きるために働け。<br>
+                            ただの労働者ではなく、自ら「選び取る」プロフェッショナルであれ。<br>
+                            私たちがロジックで高い生産性と利益を生み出すのは、会社のためだけではない。<br>
+                            私たち自身が、経済的・時間的な「自由」を手放さないためだ。
+                        </p>
+                        <div style="margin: 20px 0;"><svg class="sketch-style" width="100%" height="20" viewBox="0 0 400 10"><line x1="0" y1="5" x2="400" y2="5" class="draw-line" /></svg></div>
+                        <p class="p-text-body">
+                            自由とは、ただ待っている者のもとには来ない。<br>
+                            先を見据え、自ら決断する人間だけが享受できる特権だ。<br>
+                            その「強くて自由な生き方」を体現するために、私たちはここにいる。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="p17-actioncodes">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 60px;">
+                <h2 class="text-title sketch-style impactive-text">5 Action Codes</h2>
+                <p class="text-mono-label">行動指針</p>
+            </div>
+            <div class="credo-list">
+                <div class="credo-item sketch-style draw-box">
+                    <div class="credo-header">01. 組織と役割</div>
+                    <h3 class="credo-title">「凸凹を、人の力で埋める。」</h3>
+                    <div class="credo-text-block">
+                        <p class="credo-stanza">私たちは一人では不完全だ。だから組織がある。</p>
+                        <p class="credo-stanza">上下関係ではなく「役割」の違いを理解し、自分の「できない」を仲間の「できる」で補完せよ。</p>
+                        <p class="credo-stanza">相談は弱さではない。システムを超える、唯一の手段だ。</p>
+                    </div>
+                </div>
+                <div class="credo-item sketch-style draw-box">
+                    <div class="credo-header">02. 思考と効率</div>
+                    <h3 class="credo-title">「根性で壁を殴るな。迂回ルートを探せ。」</h3>
+                    <div class="credo-text-block">
+                        <p class="credo-stanza">できない理由を探す暇があったら、実現するための「ロジック」を探せ。</p>
+                        <p class="credo-stanza">汗をかくことが目的ではない。無駄な作業を徹底して削ぎ落とし、最短距離でゴールに到達することこそが、プロの仕事だ。</p>
+                    </div>
+                </div>
+                <div class="credo-item sketch-style draw-box">
+                    <div class="credo-header">03. 誠実さと約束</div>
+                    <h3 class="credo-title">「100%の品質、100%のリスペクト。」</h3>
+                    <div class="credo-text-block">
+                        <p class="credo-stanza">誰のための仕事か？ それは「お客様」と「働く仲間」のためだ。</p>
+                        <p class="credo-stanza">1グラム、1秒の妥協も許さないプロの厳しさと、仲間を家族のように大切にする優しさ。この2つを両立させてこそ、私たちは胸を張れる。</p>
+                    </div>
+                </div>
+                <div class="credo-item sketch-style draw-box">
+                    <div class="credo-header">04. 変化と更新</div>
+                    <h3 class="credo-title">「昨日の正解は、今日のノイズだ。」</h3>
+                    <div class="credo-text-block">
+                        <p class="credo-stanza">安定を守るな、変化を楽しめ。</p>
+                        <p class="credo-stanza">「今までこうだった」という常識こそ、真っ先に疑うべき対象だ。</p>
+                        <p class="credo-stanza">食と人の力で、新しい「当たり前（スタンダード）」を更新し続けること。<br>それが私たちの生存戦略だ。</p>
+                    </div>
+                </div>
+                <div class="credo-item sketch-style draw-box">
+                    <div class="credo-header">05. 成長と証明</div>
+                    <h3 class="credo-title">「成長し続ける努力こそ、最強の資産だ。」</h3>
+                    <div class="credo-text-block">
+                        <p class="credo-stanza">結果は水物だが、積み上げたスキルは裏切らない。</p>
+                        <p class="credo-stanza">会社のためではない。あなた自身のために、昨日の自分をUpdateし続けろ。</p>
+                        <p class="credo-stanza">そのプロセスだけが、誰にも奪えない一生の財産になる。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 100px; text-align: center;">
+                <img src="banlogo.jpg" alt="BAN Inc. Logo" class="logo-img">
+            </div>
+        </div>
+    </section>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- TOPセクション専用アニメーション ---
+        const heroTl = gsap.timeline({ delay: 0.5 }); 
+        const heroFadeTexts = gsap.utils.toArray('.fade-text-hero');
+        const heroDrawText = document.querySelector('.draw-text-hero');
+        const heroLine = document.querySelector('.draw-line-hero');
+
+        // 手書きテキストの初期設定
+        if(heroDrawText) {
+            let len = heroDrawText.getComputedTextLength();
+            gsap.set(heroDrawText, { strokeDasharray: len, strokeDashoffset: len, fill: "transparent", opacity: 1 });
+        }
+        if(heroLine) {
+            let lineLen = 900; 
+            gsap.set(heroLine, { strokeDasharray: lineLen, strokeDashoffset: lineLen });
+        }
+
+        // アニメーションシーケンス
+        // 1. Line 1 Fade In (2.0秒: ゆっくり)
+        heroTl.to(heroFadeTexts[0], { opacity: 1, duration: 2.0, ease: "power2.out" })
+        // 2. Line 2 Fade In (2.0秒: ゆっくり)
+              .to(heroFadeTexts[1], { opacity: 1, duration: 2.0, ease: "power2.out" }, ">-0.5")
+        // 3. Line 3 Draw (2.5秒)
+              .to(heroDrawText, { strokeDashoffset: 0, duration: 2.5, ease: "power2.out" }, ">-0.2")
+              .to(heroDrawText, { fill: "#1a1a1a", duration: 1.0 }, ">-1.0")
+        // 4. Draw Line
+              .to(heroLine, { strokeDashoffset: 0, duration: 1.5, ease: "power2.out" }, "<");
+
+
+        // --- 共通アニメーション群 (その他セクション用) ---
+        gsap.utils.toArray('.draw-line').forEach(line => {
+            let len = line.getTotalLength ? line.getTotalLength() : 500;
+            gsap.set(line, { strokeDasharray: len, strokeDashoffset: len });
+            gsap.to(line, { strokeDashoffset: 0, duration: 1.2, ease: "power2.out", scrollTrigger: { trigger: line, start: "top 85%" } });
+        });
+        gsap.utils.toArray('.draw-logic-line').forEach(line => {
+            let len = line.getTotalLength ? line.getTotalLength() : 500;
+            gsap.set(line, { strokeDasharray: len, strokeDashoffset: len });
+            gsap.to(line, { strokeDashoffset: 0, duration: 1.0, ease: "power2.out", scrollTrigger: { trigger: "#logic-section", start: "top 75%" } });
+        });
+        gsap.utils.toArray('.draw-text-svg').forEach(t => {
+            let len = t.getComputedTextLength();
+            gsap.set(t, { strokeDasharray: len, strokeDashoffset: len, fill: "transparent" });
+            gsap.to(t, { strokeDashoffset: 0, duration: 2.0, ease: "power1.inOut", scrollTrigger: { trigger: t, start: "top 80%" }, onComplete: () => gsap.to(t, { fill: "#1a1a1a", duration: 0.8 }) });
+        });
+        gsap.utils.toArray('.anim-fade, .draw-text-body, .anim-fade-text').forEach(el => {
+            gsap.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.2, scrollTrigger: { trigger: el, start: "top 85%" } });
+        });
+        gsap.utils.toArray('.draw-box').forEach(box => {
+            gsap.fromTo(box, { opacity: 0, scale: 0.98, borderColor: "transparent" }, { scrollTrigger: { trigger: box, start: "top 80%" }, opacity: 1, scale: 1, borderColor: "#1a1a1a", duration: 1.0, ease: "power2.out" });
+        });
+
+    </script>
+</body>
+</html>
