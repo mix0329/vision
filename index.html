@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>株式会社BAN - Vision Blueprint Final v37</title>
+    <title>株式会社BAN - Vision Blueprint Final v38</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -124,7 +124,10 @@
         .logo-img { 
             width: 240px; height: auto; margin: 0 auto; display: block; opacity: 1; 
             filter: url(#white-to-transparency);
+            cursor: pointer; /* リンクであることを示す */
+            transition: opacity 0.3s ease;
         }
+        .logo-img:hover { opacity: 0.7; }
 
         /* Logic Block */
         .logic-integrated {
@@ -618,7 +621,9 @@
             </div>
             
             <div style="margin-top: 100px; text-align: center;">
-                <img src="banlogo.jpg" alt="BAN Inc. Logo" class="logo-img">
+                <a href="https://company.bistroban.com/ABOUTBAN">
+                    <img src="banlogo.jpg" alt="BAN Inc. Logo" class="logo-img">
+                </a>
             </div>
         </div>
     </section>
