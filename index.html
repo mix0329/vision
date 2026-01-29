@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>株式会社BAN - Vision Blueprint Final v38</title>
+    <title>株式会社BAN - Vision Blueprint Final v40</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -161,24 +161,6 @@
         .credo-stanza { margin-bottom: 24px; } .credo-stanza:last-child { margin-bottom: 0; }
         .draw-box { opacity: 0; } 
 
-        /* STORY Section */
-        .story-list { display: flex; flex-direction: column; gap: 0; width: 100%; max-width: 800px; margin: 0 auto; }
-        .story-item { 
-            position: relative; padding: 50px 40px; border: 2px solid var(--ink-color); text-align: center;
-            background: none; 
-        }
-        .story-header { 
-            font-family: var(--font-mono); font-weight: 700; font-size: 20px; 
-            margin-bottom: 20px; opacity: 0.6; letter-spacing: 0.05em;
-        }
-        .story-content { 
-            font-family: var(--font-mincho); font-size: 16px; font-weight: 500; 
-            line-height: 2.2; text-align: justify; display: inline-block;
-        }
-        .story-content strong {
-            font-family: var(--font-gothic); font-weight: 900;
-        }
-
         /* 7 Rules */
         .rule-list { display: flex; flex-direction: column; gap: 0; width: 100%; margin-top: 40px; }
         .rule-item { 
@@ -245,14 +227,6 @@
                 text-align-last: left;
             }
 
-            /* Story (スマホ調整) */
-            .story-item { padding: 30px 20px; }
-            .story-content {
-                text-align: left; text-align-last: left;
-                width: 100%; font-size: 15px; line-height: 1.75;
-                word-wrap: break-word;
-            }
-
             /* 汎用テキスト */
             .block-desc, .credo-text-block, .system-body-text, .logic-footer { text-align: left; font-size: 15px; line-height: 1.75; word-break: break-all; }
 
@@ -310,7 +284,15 @@
     <section id="philosophy-integrated">
         <div class="container">
             <h2 class="text-center text-title sketch-style impactive-text">私たちの思想設計</h2>
-            
+            <div style="margin-top:20px; text-align:center;">
+                <p class="philosophy-sub">
+                    <span class="sp-block">Vision</span><span class="pc-sep"> / </span>
+                    <span class="sp-block">Mission</span><span class="pc-sep"> / </span>
+                    <span class="sp-block">Purpose</span><span class="pc-sep"> / </span>
+                    <span class="sp-block">Social Impact</span>
+                </p>
+            </div>
+
             <div class="philosophy-list">
                 
                 <div class="philosophy-item sketch-style draw-box detail-section">
@@ -468,37 +450,6 @@
                         </p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="p16-story">
-        <div class="container">
-            <div class="text-center" style="margin-bottom: 60px;">
-                <h2 class="text-title sketch-style impactive-text">STORY</h2>
-                <p class="text-mono-label">背景</p>
-            </div>
-            
-            <div class="story-list">
-                <div class="story-item draw-box sketch-style">
-                    <div class="story-header">(1. Purpose：起点)</div>
-                    <div class="story-content">
-                        <p>「自己犠牲」は、美徳ではなく「リスク」です。疲弊した心と体では、良い仕事など続くはずがありません。私たちが豊かであることは、権利ではなく<strong>「プロとして勝つための条件」</strong>です。</p>
-                    </div>
-                </div>
-                
-                <div class="connector-arrow">
-                    <svg viewBox="0 0 40 40" width="40" height="40" class="sketch-style">
-                        <line class="draw-line" x1="20" y1="0" x2="20" y2="40"/><polyline class="draw-line" points="10,30 20,40 30,30"/>
-                    </svg>
-                </div>
-
-                <div class="story-item draw-box sketch-style">
-                    <div class="story-header">(2. Mission：手段)</div>
-                    <div class="story-content">
-                        <p>だから、根性やセンスだけに頼るのはやめよう。必要なのは、誰がやっても迷わない「強い仕組み（ロジック）」です。汗をかく代わりに知恵を使い、私たちは賢く働きます。</p>
-                    </div>
-                </div>
 
                 <div class="connector-arrow">
                     <svg viewBox="0 0 40 40" width="40" height="40" class="sketch-style">
@@ -506,10 +457,25 @@
                     </svg>
                 </div>
 
-                <div class="story-item draw-box sketch-style">
-                    <div class="story-header">(3. Vision：結果)</div>
-                    <div class="story-content">
-                        <p>この「確実なロジック」があるからこそ、感動は「デザイン」できるのです。まぐれ当たりはいりません。計算された機能で生み出す、必然の熱狂。それが、プロの仕事です。</p>
+                <div class="philosophy-item sketch-style draw-box detail-section">
+                    <span class="philosophy-label">04.SOCIAL IMPACT</span>
+                    <div class="text-center" style="margin-bottom: 20px; font-family: var(--font-mono); font-weight:700;">[社会への約束]</div>
+                    
+                    <div style="width:100%; max-width:900px; margin:0 auto;">
+                        <svg viewBox="0 0 900 150" class="sketch-style pc-only" width="100%">
+                            <text x="450" y="90" text-anchor="middle" class="draw-text-svg" style="font-size: 54px;">この街に住む理由を、つくる。</text>
+                        </svg>
+                        <svg viewBox="0 0 600 300" class="sketch-style sp-only" width="100%">
+                            <text x="300" y="120" text-anchor="middle" class="draw-text-svg" style="font-size: 56px;">この街に住む</text>
+                            <text x="300" y="220" text-anchor="middle" class="draw-text-svg" style="font-size: 56px;">理由を、つくる。</text>
+                        </svg>
+                    </div>
+
+                    <div class="philosophy-content anim-fade">
+                        <p class="p-text-body">
+                            「美味しい店」なら、どこにでもあります。私たちが目指すのは、その先。不動産屋さんが、お客様を案内するとき、「この街はいいですよ、近くにあの店がありますから」そう言ってもらえるような、街になくてはならない存在になること。<br>
+                            「あの店があるから、この街に住みたい。」「あの店があるから、毎日の生活が楽しい。」私たちが存在することで、街の景色が良くなる。地域の「一番」として、この街を愛する理由を、私たちが今日ここからつくります。
+                        </p>
                     </div>
                 </div>
             </div>
